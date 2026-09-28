@@ -1,0 +1,48 @@
+{
+  "name": "lisa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LISA \u2014 Learning Intelligence & Strategy Agent. A memory-driven business operations agent built on Hindsight.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "demo:reset": "tsx scripts/demo-reset.ts"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "ioredis": "^6.0.0",
+    "lucide-react": "^1.48.0",
+    "next": "16.3.6",
+    "pg": "^8.23.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.5",
+    "typescript": "^5",
+    "vitest": "^5.0.2"
+  }
+}
