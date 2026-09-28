@@ -1,131 +1,355 @@
 # LISA — Learning Intelligence & Strategy Agent
 
-LISA is a business-operations decision-support agent that improves through a closed learning loop: **case → memory recall → recommendation → human decision → verified outcome → memory retain**. Resolved experiences—not just chat transcripts—are the core product value.
+**An AI-powered business operations assistant that learns from your decisions and gets smarter over time.**
 
-> **Human stays in control.** LISA produces evidence-grounded recommendations. It never issues refunds, contacts customers, changes orders or executes business actions. An operator must approve, modify or reject recommendations, and separately record the real outcome.
+LISA helps you handle customer issues by analyzing past experiences and recommending the best action. It remembers what worked (and what didn't) so future decisions are faster and more accurate.
 
-## Product features
+---
 
-- Operations dashboard with case volume, service outcomes, recent work and learning indicators.
-- Case inbox with search/filter, priority, category, customer details, timeline and imports.
-- Case analysis using retrieved experiences, prior outcomes, confidence, rationale, risks and next steps.
-- Approve / modify / reject decisions plus an explicit success / partial / failure / unknown resolution record.
-- Long-term Hindsight memory (retain, recall and reflect adapter) with local lexical fallback for a zero-key demo.
-- Learning adjustments based on human-recorded outcomes; similar cases and their results remain visible to operators.
-- LISA Chat, memory explorer, decision audit trail, analytics, knowledge guide and settings.
-- Groq and Hindsight credentials are server-side only. No `NEXT_PUBLIC_*` provider secrets.
-- PostgreSQL persistence, Redis-backed cache/rate limits, safe local file fallback, API authentication and structured logs.
+## 🎯 What LISA Does
 
-## Stack
+**LISA analyzes customer issues and recommends solutions based on real past outcomes.**
 
-- Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4
-- Groq Chat Completions API (OpenAI-compatible REST interface)
-- Hindsight memory REST API (Cloud or self-hosted)
-- PostgreSQL (`pg`) for cases, analyses, decisions, timeline and lessons
-- Redis (`ioredis`) for cache and shared fixed-window rate limits
-- Recharts for analytics, Zod for API input validation, Vitest for tests
+Here's how it works:
 
-## Quick start (local demo)
+1. **You create a case** (delivery problem, refund request, complaint, etc.)
+2. **LISA analyzes it** - searches past similar cases and recommends an action
+3. **You decide** - approve, modify, or reject the recommendation
+4. **You resolve the case** - record what actually happened (success/failure)
+5. **LISA learns** - remembers the outcome and uses it for future cases
 
-Requirements: Node.js 20.11+ and npm 10+.
+> **You stay in control.** LISA only recommends actions. It never automatically refunds money, contacts customers, or executes any business actions. You always make the final decision.
+
+---
+
+## ✨ Key Features
+
+- **Smart Case Analysis** - LISA finds similar past cases and shows what worked before
+- **Evidence-Based Recommendations** - Every suggestion comes with reasons and past results
+- **Learning Memory** - Remembers outcomes and improves recommendations over time
+- **LISA Chat** - Ask questions about patterns, problems, or what to do
+- **Dashboard** - See case volume, success rates, and what LISA has learned
+- **Decision Tracking** - Full audit trail of every decision and outcome
+
+---
+
+## 🚀 Quick Start (5 Minutes)
+
+### Requirements
+- Node.js 20.11 or higher
+- npm 10 or higher
+
+### Install & Run
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up environment (copy example file)
+cp .env.example .env
+
+# 3. Add your Groq API key to .env
+# Open .env and add: GROQ_API_KEY=your_key_here
+
+# 4. Start the app
+npm run dev
+```
+
+**Open http://localhost:3000** in your browser.
+
+The app includes demo data so you can try it immediately!
+
+---
+
+## 🔑 Get Your API Keys (Optional but Recommended)
+
+### Groq API (For AI Intelligence)
+
+1. Go to https://console.groq.com/keys
+2. Create a free account
+3. Generate an API key
+4. Add to `.env`: `GROQ_API_KEY=your_key_here`
+
+**Recommended model:** `openai/gpt-oss-120b` (already configured)
+
+Without Groq, LISA uses basic rules - it works but isn't as smart.
+
+### Other Optional Services
+
+- **PostgreSQL** - For permanent storage (required for production)
+- **Redis** - For caching (improves performance)
+- **Hindsight** - For advanced memory features (optional)
+
+**For local development, you don't need these.** LISA stores data in a local file and works fine for testing.
+
+---
+
+## 📖 How to Use LISA
+
+### 1. Dashboard
+See all your cases, success rates, and what LISA has learned.
+
+### 2. Create a Case
+Click "Create Case" and fill in:
+- Customer issue (delivery problem, refund, complaint, etc.)
+- Customer details
+- Priority level
+
+### 3. Analyze with LISA
+Click "Analyze with LISA" on any case. LISA will:
+- Search for similar past cases
+- Show what actions worked before
+- Recommend the best action
+- Explain why with evidence
+
+### 4. Make Your Decision
+- **Approve** - Use LISA's recommendation
+- **Modify** - Change the recommendation
+- **Reject** - Choose a different action
+
+### 5. Resolve the Case
+After taking action, record what happened:
+- **Success** - It worked, customer happy
+- **Partial** - Partially resolved
+- **Failure** - Didn't work as expected
+
+LISA remembers this and uses it for future similar cases!
+
+### 6. Chat with LISA
+Ask questions like:
+- "What problems are customers having?"
+- "What should I do about a late delivery?"
+- "What patterns do you see?"
+- "Have we dealt with this before?"
+
+---
+
+## 💾 What Gets Stored
+
+### Local File Storage (Development)
+- Data stored in `.lisa/data.json`
+- Fine for testing and demos
+- Not suitable for production
+
+### PostgreSQL (Production)
+- All cases, decisions, outcomes, and lessons
+- Permanent and reliable
+- Required for production use
+
+### Memory System
+- Every resolved case becomes a "memory"
+- LISA recalls these when analyzing new cases
+- Shows which past actions succeeded or failed
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+- Next.js 16 with App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+
+**Backend:**
+- Next.js API Routes (same server)
+- Groq AI API (openai/gpt-oss-120b model)
+- PostgreSQL (optional - for production)
+- Redis (optional - for caching)
+
+**AI & Memory:**
+- Groq LLM for intelligent analysis
+- Built-in memory system (or Hindsight for advanced use)
+
+---
+
+## 📁 Project Structure
+
+```
+lisa/
+├── src/
+│   ├── app/              # Pages and UI
+│   │   ├── page.tsx      # Dashboard
+│   │   ├── cases/        # Case list and detail pages
+│   │   ├── chat/         # LISA chat
+│   │   └── api/          # Backend API routes
+│   ├── components/       # Reusable UI components
+│   ├── lib/
+│   │   ├── services/     # Business logic
+│   │   ├── llm/          # Groq AI integration
+│   │   ├── memory/       # Memory and learning
+│   │   └── db/           # Database access
+├── .env                  # Your API keys (not committed)
+├── .env.example          # Template for environment setup
+└── package.json          # Dependencies
+```
+
+---
+
+## ⚙️ Environment Configuration
+
+Edit `.env` to configure LISA:
+
+```bash
+# AI Intelligence (Required for smart recommendations)
+GROQ_API_KEY=your_groq_key_here
+GROQ_MODEL=openai/gpt-oss-120b
+
+# Database (Optional - uses local file if not set)
+DATABASE_URL=postgresql://user:pass@host:5432/lisa
+
+# Cache (Optional - improves performance)
+REDIS_URL=redis://localhost:6379
+
+# Security (Optional - for production)
+LISA_API_TOKEN=your_secure_token_here
+```
+
+---
+
+## 🔒 Security Notes
+
+✅ **API keys are server-side only** - never exposed to the browser  
+✅ **No keys in client code** - all AI calls happen on the server  
+✅ **`.env` is gitignored** - your keys stay private  
+✅ **Use `LISA_API_TOKEN`** in production to protect your API  
+
+**If you accidentally expose a key:** Revoke it immediately at the provider and generate a new one.
+
+---
+
+## 🚢 Deploying to Production
+
+### Minimum Requirements:
+1. ✅ PostgreSQL database
+2. ✅ `LISA_API_TOKEN` set
+3. ✅ `GROQ_API_KEY` set
+4. ✅ Run `npm run db:migrate` before first deploy
+
+### Deploy to Vercel (Easiest):
+
+1. Push your code to GitHub
+2. Go to https://vercel.com
+3. Import your repository
+4. Add environment variables:
+   - `GROQ_API_KEY`
+   - `DATABASE_URL` (use Vercel Postgres)
+   - `REDIS_URL` (use Vercel KV)
+   - `LISA_API_TOKEN`
+5. Deploy!
+
+**Vercel handles SSL, scaling, and serverless functions automatically.**
+
+---
+
+## 🧪 Testing & Development
+
+```bash
+# Run development server
+npm run dev
+
+# Check types
+npm run typecheck
+
+# Lint code
+npm run lint
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+
+# Run all checks
+npm run check
+```
+
+---
+
+## 📊 Example Use Cases
+
+### Customer Support
+- Delivery failures
+- Refund requests
+- Product complaints
+- Order issues
+
+### Operations
+- Escalations
+- Supplier problems
+- Service incidents
+
+### Learning Patterns
+- "What actions work best for late deliveries?"
+- "Which refund approaches have highest success?"
+- "What are our most common problems?"
+
+---
+
+## 🤔 Common Questions
+
+**Q: Do I need a Groq account?**  
+A: Yes, for intelligent AI recommendations. Free tier available.
+
+**Q: Can I use OpenAI instead of Groq?**  
+A: Currently LISA is built for Groq, but you could modify the API client.
+
+**Q: Is my data stored securely?**  
+A: Yes. In production, use PostgreSQL with proper backups. Never commit API keys.
+
+**Q: Can LISA automatically take actions?**  
+A: No. LISA only recommends. You always approve/reject decisions.
+
+**Q: How does LISA learn?**  
+A: When you resolve a case, LISA stores the outcome. Future similar cases use this experience.
+
+**Q: What happens if I don't have Groq configured?**  
+A: LISA uses basic rule-based logic. It works but isn't as smart.
+
+---
+
+## 📚 Additional Documentation
+
+- **AI_INTEGRATION_COMPLETE.md** - Details about the AI setup
+- **IMPROVED_RESPONSES.md** - How LISA's response style works
+- **docs/ARCHITECTURE.md** - Technical architecture details
+- **docs/OPERATIONS.md** - Production deployment guide
+
+---
+
+## 🛟 Support & Issues
+
+**Check the health endpoint:**
+```bash
+curl http://localhost:3000/api/health
+```
+
+This shows which services are active (Groq, database, cache).
+
+**Common issues:**
+- **"LISA uses local mode"** → Add `GROQ_API_KEY` to `.env`
+- **"No cases shown"** → The app auto-seeds demo data on first load
+- **"Analysis failed"** → Check your Groq API key is valid
+
+---
+
+## 📝 License
+
+MIT - See LICENSE file for details
+
+---
+
+## 🎉 Get Started Now!
 
 ```bash
 npm install
 cp .env.example .env
+# Add your GROQ_API_KEY to .env
 npm run dev
 ```
 
-Open `http://localhost:3000`. If the development database has no cases, the dashboard seeds a small, non-destructive demonstration dataset. It includes successful and unsuccessful outcomes, a pending case and a fresh delivery case, so the learning loop is easy to show. Demo seeding is disabled in production.
+**Open http://localhost:3000 and start exploring!**
 
-With no credentials, the app remains usable with a deterministic rules baseline, local file persistence (`.lisa/data.json`) and lexical memory retrieval. The interface and health endpoint identify these local modes; they are not represented as live Groq/Hindsight/Postgres providers.
+LISA comes with demo data, so you can try everything immediately. Create a case, analyze it, resolve it, and watch LISA learn from your decisions.
 
-To exercise Postgres and Redis locally, start the included services and set these values in `.env` (change `DATABASE_SSL` from `require` to `disable` for the local container):
-
-```bash
-docker compose up -d
-```
-
-Then add these lines to `.env`:
-
-```dotenv
-DATABASE_URL=postgresql://lisa:local-lisa-dev-only@localhost:5432/lisa
-DATABASE_SSL=disable
-REDIS_URL=redis://:local-redis-dev-only@localhost:6379
-```
-
-```bash
-npm run demo:reset # destructive; development only
-```
-
-## Configure providers
-
-Edit your ignored local `.env`, or use your deployment platform's encrypted secret manager:
-
-```dotenv
-GROQ_API_KEY=...                  # https://console.groq.com/keys
-GROQ_MODEL=llama-3.3-70b-versatile
-HINDSIGHT_API_KEY=...              # Hindsight Cloud Connect page
-HINDSIGHT_BASE_URL=https://api.hindsight.vectorize.io
-HINDSIGHT_BANK=lisa-operations
-DATABASE_URL=postgresql://...      # use your provider's pooled URL on serverless
-REDIS_URL=redis://...
-LISA_API_TOKEN=...                 # strongly recommended outside a private demo
-```
-
-- **Groq:** create a key in GroqCloud. The default model is a production-supported model; choose an active model ID from [Groq's model list](https://console.groq.com/docs/models). The LLM is called only from server routes.
-- **Hindsight:** use the API base URL and tenant-scoped key shown on the Hindsight Connect page, or point to your self-hosted server. LISA creates/updates the configured bank on the first retain. Hindsight itself requires its own supported LLM/database deployment.
-- **PostgreSQL:** `DATABASE_URL` activates the Postgres driver. Schema bootstrap is idempotent and can run on first request; run `npm run db:migrate` as a deployment step to apply it before serving traffic. `db/schema.sql` is the human-reviewable schema. Set `LISA_AUTO_MIGRATE=false` if migrations are managed externally.
-- **Redis:** `REDIS_URL` enables shared cache and rate limits. Without it, a process-local fallback works for development/single-instance demos but is not shared across serverless instances.
-- **API access:** when `LISA_API_TOKEN` is set, the UI exchanges it for a signed, HTTP-only, SameSite=Strict cookie. API clients can also use `Authorization: Bearer <LISA_API_TOKEN>`. Store the token in a secret manager; do not put it in frontend configuration.
-
-If an API key was pasted into chat, a ticket, a prompt, or a public repo, **revoke it at the provider immediately and rotate it**. Removing it from a file does not invalidate an exposed key. This repository contains no real provider credentials.
-
-## Production deployment
-
-### Required before production traffic
-
-1. Configure PostgreSQL and run `npm run db:migrate` as a release step. Use a pooled/transaction-pool connection URL where required by serverless providers and tune `DATABASE_POOL_MAX` to the provider's connection budget.
-2. Configure `LISA_API_TOKEN` and HTTPS. Production API requests fail closed if `DATABASE_URL` is absent. The local file store is development-only; it is not durable across serverless instances.
-3. Configure secret values only in Vercel/hosting encrypted environment settings. Never pass Groq or Hindsight keys as browser variables.
-4. Configure Groq and Hindsight for full provider behavior. Confirm `/api/health` and **Settings → Connected services** show the intended modes.
-5. Configure Redis for shared rate limiting/cache in multi-instance deployments. Set sensible platform request limits and provider quotas.
-6. Review Hindsight's retention/privacy settings and the case/customer data sent to external LLM and memory providers. Apply your organization's lawful basis, redaction, retention and data-processing requirements.
-7. Set backups, database restore drills, log/alert collection, dependency update automation, and an incident process for credential rotation.
-
-### Vercel
-
-Import the Git repository as a Next.js project. Add production environment values in Vercel Project Settings, attach managed PostgreSQL and Redis services, run the migration command in a release/build workflow, then deploy. This application uses server-side Next.js route handlers for its backend; browser requests are same-origin relative paths.
-
-`docker-compose.yml` provides local Postgres + Redis for development. Hindsight can be run separately using its official deployment guidance; LISA never stores provider keys in the client bundle.
-
-## API overview
-
-All routes use JSON, stable error envelopes, input validation, same-origin checks for writes, bounded request bodies and request IDs. Except `/api/health` and `/api/auth/*`, routes require the configured session/Bearer auth when `LISA_API_TOKEN` is set.
-
-| Method | Path | Purpose |
-|---|---|---|
-| GET / POST | `/api/cases` | Search/list and create cases |
-| GET / PATCH | `/api/cases/:id` | Case, latest analysis, decisions and timeline |
-| POST | `/api/cases/:id/analyze` | Recall experience and create a recommendation |
-| POST | `/api/cases/:id/decision` | Approve, reject or modify (human action) |
-| POST | `/api/cases/:id/resolve` | Record actual outcome and retain the experience |
-| GET | `/api/dashboard`, `/api/analytics` | Metrics and trends |
-| GET | `/api/memory`, `/api/decisions` | Learning evidence and decision audit |
-| GET / POST | `/api/chat` | Chat history and memory-aware chat turn |
-| POST | `/api/import` | Import up to 100 validated cases |
-| GET / PATCH | `/api/settings` | Workspace settings and service health |
-| GET | `/api/health` | Liveness/readiness and provider modes (no secrets) |
-
-## Development and checks
-
-```bash
-npm run dev
-npm run lint
-npm run typecheck
-npm test
-npm run build
-# or all key checks together
-npm run check
-```
-
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/OPERATIONS.md](docs/OPERATIONS.md) for design assumptions, deployment notes and limitations.
+**Questions?** Check the documentation files or open an issue on GitHub.

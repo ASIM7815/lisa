@@ -24,7 +24,7 @@ const actionSchema = z.object({
   rationale: z.string().min(5).max(2_000),
   steps: z.array(z.string().min(2).max(300)).min(1).max(8),
   slaHours: z.number().int().positive().max(8_760).optional(),
-  estimatedCost: z.string().max(100).optional(),
+  estimatedCost: z.union([z.string(), z.number()]).transform(v => String(v)).optional(),
 });
 
 const resultSchema = z.object({
